@@ -2,7 +2,7 @@
 from django import forms
 import cik.models
 from cik.models import *
-import easy_select2
+# import easy_select2
 # from django_select2 import forms as s2forms
 
 
