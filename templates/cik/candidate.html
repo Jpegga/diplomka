@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css\cik.css" %}" >
+    <title>Добавление кандидата</title>
+</head>
+<body>
+    <div>
+        <a href="/">Главная</a>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Вернуться" name="btnreturn">
+        </form>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <input type="submit" value="Добавить" name="btnform">
+            <h2>{{ vote }}. Список кандидатов:</h2>
+            {% if candidates.count > 0 %}
+            <table>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Фото</th>
+                </tr>
+                {% for candidate in candidates %}
+                <tr>
+                    <td>{{ candidate.fio }}</td>
+                    <td><img src="{{ candidate.image.url }}" alt="Фото кандидата {{ candidate.fio }}" width="100" height="100" border="0"></td>
+<!--                    <td>{{ candidate.image }}</td>-->
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </form>
+
+    </div>
+</body>
+</html>

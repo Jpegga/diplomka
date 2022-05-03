@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css\cik.css" %}" >
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <title>Добавление выборов</title>
+</head>
+<body>
+    <body>
+        <div>
+            <a href="/">Главная</a>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.media.js }}
+                {{ form.as_p }}
+                <input type="submit" value="Добавить">
+            </form>
+            {% if votes.count > 0 %}
+                <h2>Список выборов</h2>
+                <table>
+                    <tr><th>Уровень выборов</th><th>Территория</th></tr>
+                    {% for vote in votes %}
+                    <tr><td>{{ vote.id_Grade }}</td><td>{{ vote.id_Terr }}</td></tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    </body>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "css\cik.css" %}">
+    {% load auth_extras %}
+    <title>Электронное голосование</title>
+</head>
+<body>
+    <header>
+        <nav id="menu">
+            <ul>
+                <li><a href="/">Главная</a></li>
+                {% if request.user.is_authenticated %}
+                    {% if request.user|has_group:"CIK" %}
+                        <li> Добро пожаловать {{ request.user.username }}</li>
+                        <li><a href="/vote/">Просмотр кандидатов</a></li>
+                        <li><a href="/cikhome">Данные</a> </li>
+                        <li><a href="/auth/logout">Выйти</a></li>
+                    {% else %}
+                        <li> Добро пожаловать {{ request.user.username }}</li>
+                        <li><a href="/vote/">Просмотр кандидатов</a></li>
+                        <li><a href="/auth/logout">Выйти</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a href="/auth/login">Войти</a></li>
+                    <li><a href="registration">Регистрация</a></li>
+                {% endif %}
+          </ul>
+        </nav>
+      </header>
+</body>
+</html>

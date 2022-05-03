@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+</head>
+<body>
+<a href="/">Главная</a>
+<form method="post">
+    <table>
+    {{ user_form.as_table }}
+    </table>
+    {% csrf_token %}
+    <p><input type="submit" value="Войти"></p>
+</form>
+</body>
+</html>

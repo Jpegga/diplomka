@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Выборы</title>
+</head>
+<body>
+    <div>
+        <a href="/">Главная</a>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <input type="submit" value="Поиск" name="btnvote">
+        </form>
+    </div>
+</body>
+</html>
