@@ -38,10 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 'model_utils',
-    'easy_select2',
+    # 'easy_select2',
     'cik',
     'main',
-    'django_select2',
+    # 'django_select2',
     # 'django_redis'
 ]
 

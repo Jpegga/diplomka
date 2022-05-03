@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-from cik.forms import CandidateForm
 from main.forms import VoteForm
 from cik.models import voteModel, candidateModel
 from main.forms import UserRegistrationForm
