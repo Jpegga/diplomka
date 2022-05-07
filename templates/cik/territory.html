@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Территории</title>
+</head>
+<body>
+<div>
+    <a href="/">Главная</a>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Назад" name="btnreturn">
+    </form>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="Сохранить" name="btnform">
+        {% if model.count > 0 %}
+        <h2>Список территорий:</h2>
+            <table>
+                <tr>
+                    <th>Уровень</th>
+                    <th>Территория</th>
+                </tr>
+                {% for territory in model %}
+                <tr>
+                    <td>{{ territory.id_Grade }}</td>
+                    <td>{{ territory.territory_Name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </form>
+</div>
+</body>
+</html>

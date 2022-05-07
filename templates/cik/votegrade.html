@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a href="/">Главная</a>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="Сохранить" name="btnform">
+        <button><a href="/cikhome">Назад</a></button>
+        {% if model.count > 0 %}
+        <h2>Список уровней выборов:</h2>
+            <table>
+                <tr>
+                    <th>Уровень</th>
+                    <th>Название</th>
+                </tr>
+                {% for votegrade in model %}
+                <tr>
+                    <td>{{ votegrade.grade }}</td>
+                    <td>{{ votegrade.name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </form>
+</div>
+</body>
+</html>

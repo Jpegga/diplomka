@@ -20,8 +20,9 @@
                 {% csrf_token %}
                 {{ form.media.js }}
                 {{ form.as_p }}
-                <input type="submit" value="Добавить">
+                <input type="submit" value="Сохранить">
             </form>
+            <button><a href="/cikhome">Назад</a></button>
             {% if votes.count > 0 %}
                 <h2>Список выборов</h2>
                 <table>

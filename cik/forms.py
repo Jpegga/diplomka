@@ -16,10 +16,23 @@ class CandidateForm(forms.Form):
     Image = forms.ImageField(label="Фотография кандидата")
 
 
+class idCandidateForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput())
+
 
 class VoteForm(forms.Form):
     VoteGrade = forms.ModelChoiceField(label="Уровень выборов", queryset=voteGradeModel.objects.all())
     Territory = forms.ModelChoiceField(label="Территория", queryset=territoryModel.objects.all())
+
+
+class VoteGradeForm(forms.Form):
+    grade = forms.CharField(label="Уровень", widget=forms.NumberInput(attrs={'placeholder': 'Число'}))
+    name = forms.CharField(label="Название")
+
+
+class TerritoryForm(forms.Form):
+    voteGrade = forms.ModelChoiceField(label="Уровень выборов", queryset=voteGradeModel.objects.all())
+    name = forms.CharField(label="Название территории")
 
 
 # class VoteWidget(easy_select2.Select2Mixin):

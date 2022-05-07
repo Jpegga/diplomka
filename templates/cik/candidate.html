@@ -13,14 +13,15 @@
         <a href="/">Главная</a>
         <form method="post">
             {% csrf_token %}
-            <input type="submit" value="Вернуться" name="btnreturn">
+            <input type="submit" value="Назад" name="btnreturn">
         </form>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <table>
                 {{ form }}
             </table>
-            <input type="submit" value="Добавить" name="btnform">
+            <input type="submit" value="Сохранить" name="btnform">
+
             <h2>{{ vote }}. Список кандидатов:</h2>
             {% if candidates.count > 0 %}
             <table>
@@ -32,13 +33,14 @@
                 <tr>
                     <td>{{ candidate.fio }}</td>
                     <td><img src="{{ candidate.image.url }}" alt="Фото кандидата {{ candidate.fio }}" width="100" height="100" border="0"></td>
-<!--                    <td>{{ candidate.image }}</td>-->
+                    <td><input type="submit" value="Изменить" name="btnedit"></td>
+                    <td><input type="submit" value="Удалить" name="btndelete"></td>
+                    <td hidden>{{ id }}{{ candidate.id_Candidate }}</td>
                 </tr>
                 {% endfor %}
             </table>
             {% endif %}
         </form>
-
     </div>
 </body>
 </html>

@@ -30,6 +30,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', main.registration, name='registration'),
     path('vote/', main.voteView, name='registration'),
+    path('addvotegrade/', cik.voteGradeView, name='addvotegrade'),
+    path('addterritory/', cik.territoryView, name='addterritory'),
+    path('reports/', cik.reportsView, name='reports'),
+    path('candidateslist/', cik.reportCandidateVoteView, name='candidatesreport'),
+    path('voteslist/', cik.reportVotes, name='votesreport'),
+
 
     # path('vote/', cik.VoteCreateView.as_view(), name="vote_create"),
     # path('select2/', include('django_select2.urls')),

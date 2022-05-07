@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список выборов</title>
+</head>
+<body>
+<a href="/">Главная</a>
+<button><a href="/reports">Назад</a></button>
+{% if votes.count > 0 %}
+<h2>Список выборов</h2>
+<table>
+    <tr><th>Уровень выборов</th><th>Территория</th></tr>
+    {% for vote in votes %}
+    <tr>
+        <td>{{ vote.id_Grade }}</td>
+        <td>{{ vote.id_Terr }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+</body>
+</html>
