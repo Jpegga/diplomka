@@ -15,7 +15,10 @@
             </table>
             <input type="submit" value="Поиск" name="btnvote">
         </form>
-        <button><a href="/cikhome">Назад</a></button>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Назад" name="btnreturn">
+        </form>
     </div>
 </body>
 </html>

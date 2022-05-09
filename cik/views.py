@@ -20,6 +20,8 @@ def candidateVoteView(request):
         if request.method == "POST" and "btnvote" in request.POST:
             vote = voteModel.objects.get(id_Vote=int(request.POST.get("Vote")))
             return HttpResponse(candidateView(request, vote))
+        elif request.method == "POST" and "btnreturn" in request.POST:
+            return HttpResponseRedirect('/cikhome')
         else:
             return render(request, "cik/candidateVote.html", {"form": CandidateVoteForm})
     else:
@@ -28,7 +30,9 @@ def candidateVoteView(request):
 
 def candidateView(request, vote):
     if request.user.groups.filter(name='CIK').exists():
+        print('sosi1')
         if request.method == "POST" and "btnform" in request.POST:
+            print('sosi2')
             candidate = candidateModel()
             candidate.fio = request.POST.get("FIO")
             candidate.description = request.POST.get("Description")
@@ -41,15 +45,15 @@ def candidateView(request, vote):
             voteCandidate.id_Vote = voteModel.objects.get(id_Vote=int(request.POST.get("Vote")))
             voteCandidate.id_Candidate = candidateModel.objects.get(id_Candidate=int(candidate.id_Candidate))
             voteCandidate.save()
-            return HttpResponseRedirect('/addcandidate/')
+            return HttpResponse(candidateView(request, vote))
         elif request.method == "POST" and "btndelete" in request.POST:
+            print('sosi3')
             id = request.POST.get("id")
             candidate = candidateModel.objects.get(id=id)
             candidate.delete()
-            return HttpResponseRedirect('/addcandidate/')
-        elif request.method == "POST" and "btnreturn" in request.POST:
-            return HttpResponse(candidateView(request))
+            return HttpResponse(candidateView(request, vote))
         else:
+            print('sosi4')
             candidate = candidateModel.objects.filter(votecandidatemodel__id_Vote=vote)
             context = {
                 "form": CandidateForm,
@@ -106,9 +110,9 @@ def territoryView(request):
     if request.user.groups.filter(name='CIK').exists():
         if request.method == "POST" and "btnform" in request.POST:
             territory = territoryModel()
-            territoryModel.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("grade")))
-            territoryModel.territory_Name = request.POST.get("name")
-            territoryModel.save()
+            territory.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("voteGrade")))
+            territory.territory_Name = request.POST.get("name")
+            territory.save()
             return HttpResponseRedirect('/addterritory/')
         elif request.method == "POST" and "btnreturn" in request.POST:
             return HttpResponseRedirect('/cikhome/')
