@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/', include('django.contrib.auth.urls')),
     path('cikhome/', cik.homeView, name='cikhome'),
     path('addcandidate/', cik.candidateVoteView, name='addcandidate'),
+    path('votecandidates/<int:vote>', cik.candidateView, name='vote_candidates'),
     path('addvote/', cik.voteView, name='addvote'),
     path('admin/', admin.site.urls),
     path('registration/', main.registration, name='registration'),

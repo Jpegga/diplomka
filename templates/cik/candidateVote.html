@@ -15,10 +15,7 @@
             </table>
             <input type="submit" value="Поиск" name="btnvote">
         </form>
-        <form method="post">
-            {% csrf_token %}
-            <input type="submit" value="Назад" name="btnreturn">
-        </form>
+        <a href="{% url 'cikhome'%}"><button>Назад</button></a>
     </div>
 </body>
 </html>

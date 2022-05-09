@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from cik.forms import *
 from django.views import generic, View
@@ -17,51 +17,65 @@ def homeView(request):
 
 def candidateVoteView(request):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnvote" in request.POST:
-            vote = voteModel.objects.get(id_Vote=int(request.POST.get("Vote")))
-            return HttpResponse(candidateView(request, vote))
-        elif request.method == "POST" and "btnreturn" in request.POST:
-            return HttpResponseRedirect('/cikhome')
+        context = {}
+        if request.method == "POST":
+            form = CandidateVoteForm(request.POST)
+            if form.is_valid():
+                return redirect('vote_candidates', vote=form.cleaned_data["Vote"].id_Vote)
+            else:
+                context["form"] = form
         else:
-            return render(request, "cik/candidateVote.html", {"form": CandidateVoteForm})
+            context["form"] = CandidateVoteForm
+
+        return render(request, "cik/candidateVote.html", context=context)
     else:
         return render(request, "cik/denied.html")
 
 
 def candidateView(request, vote):
     if request.user.groups.filter(name='CIK').exists():
-        print('sosi1')
-        if request.method == "POST" and "btnform" in request.POST:
-            print('sosi2')
-            candidate = candidateModel()
-            candidate.fio = request.POST.get("FIO")
-            candidate.description = request.POST.get("Description")
-            file = request.FILES["Image"]
-            fs = FileSystemStorage()
-            filename = fs.save(file.name, file)
-            candidate.image = file
-            candidate.save()
-            voteCandidate = voteCandidateModel()
-            voteCandidate.id_Vote = voteModel.objects.get(id_Vote=int(request.POST.get("Vote")))
-            voteCandidate.id_Candidate = candidateModel.objects.get(id_Candidate=int(candidate.id_Candidate))
-            voteCandidate.save()
-            return HttpResponse(candidateView(request, vote))
-        elif request.method == "POST" and "btndelete" in request.POST:
-            print('sosi3')
-            id = request.POST.get("id")
-            candidate = candidateModel.objects.get(id=id)
-            candidate.delete()
-            return HttpResponse(candidateView(request, vote))
-        else:
-            print('sosi4')
-            candidate = candidateModel.objects.filter(votecandidatemodel__id_Vote=vote)
-            context = {
-                "form": CandidateForm,
-                "vote": vote,
-                "candidates": candidate,
-                'id' : idCandidateForm,
-            }
-            return render(request, "cik/candidate.html", context=context)
+        candidate = candidateModel.objects.filter(votecandidatemodel__id_Vote=vote)
+        vote = voteModel.objects.get(id_Vote=vote)
+        context = {
+            "form": CandidateForm,
+            "vote": vote,
+            "candidates": candidate,
+            'id' : idCandidateForm,
+        }
+
+        if request.method == "POST":
+            if "btnform" in request.POST:
+                form = CandidateForm(request.POST, request.FILES)
+                if form.is_valid():
+                    file = form.cleaned_data["Image"]
+                    fs = FileSystemStorage()
+                    fs.save(file.name, file)
+                    candidate = candidateModel(fio=form.cleaned_data["FIO"], description=form.cleaned_data["Description"], image=form.cleaned_data["Image"])
+                    candidate.save()
+                    voteCandidateModel(id_Candidate=candidate, id_Vote=vote).save()
+                else:
+                    context["form"] = form
+        elif len(request.GET) > 0:
+                del_id = int(request.GET.get("delete", -1))
+                change_id = int(request.GET.get("change", -1))
+
+                if del_id != -1:
+                    try:
+                        candidateModel.objects.get(id_Candidate=del_id).delete()
+                    except Exception as e:
+                        pass
+
+                    return redirect('vote_candidates', vote=vote.id_Vote)
+
+                if change_id != -1:
+                    try:
+                        pass # code for change record
+                    except Exception as e:
+                        pass
+
+                    return redirect('vote_candidates', vote=vote.id_Vote)
+
+        return render(request, "cik/candidate.html", context=context)
     else:
         return render(request, "cik/denied.html")
 
@@ -75,7 +89,7 @@ def voteView(request):
             vote.id_Grade = grade
             vote.id_Terr = territory
             vote.save()
-            return HttpResponseRedirect("/addcandidate/")
+            return redirect("addcandidate")
         elif request.method == "POST" and "btnreturn" in request.POST:
             return HttpResponseRedirect('/cikhome/')
         votefor = VoteForm()
