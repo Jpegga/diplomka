@@ -16,12 +16,12 @@
                 {% if request.user.is_authenticated %}
                     {% if request.user|has_group:"CIK" %}
                         <li> Добро пожаловать {{ request.user.username }}</li>
-                        <li><a href="/vote/">Просмотр кандидатов</a></li>
+                        <li><a href="/vote/">Выбор голосования</a></li>
                         <li><a href="/cikhome">Данные</a> </li>
                         <li><a href="/auth/logout">Выйти</a></li>
                     {% else %}
                         <li> Добро пожаловать {{ request.user.username }}</li>
-                        <li><a href="/vote/">Просмотр кандидатов</a></li>
+                        <li><a href="/vote/">Выбор голосования</a></li>
                         <li><a href="/auth/logout">Выйти</a></li>
                     {% endif %}
                 {% else %}
