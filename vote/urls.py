@@ -27,6 +27,7 @@ urlpatterns = [
     path('cikhome/', cik.homeView, name='cikhome'),
     path('addcandidate/', cik.candidateVoteView, name='addcandidate'),
     path('votecandidates/<int:vote>', cik.candidateView, name='vote_candidates'),
+    path('candidatechange/<int:vote>/<int:id>', cik.candidateChangeView, name='candidate_change'),
     path('addvote/', cik.voteView, name='addvote'),
     path('admin/', admin.site.urls),
     path('registration/', main.registration, name='registration'),

@@ -62,6 +62,7 @@ def candidateView(request, vote):
                 if del_id != -1:
                     try:
                         candidateModel.objects.get(id_Candidate=del_id).delete()
+
                     except Exception as e:
                         pass
 
@@ -69,13 +70,58 @@ def candidateView(request, vote):
 
                 if change_id != -1:
                     try:
-                        pass # code for change record
+                        con = {
+                            id: change_id,
+                            vote: vote.id_Vote
+                        }
+                        return redirect('candidate_change', vote.id_Vote, change_id)
+
                     except Exception as e:
+                        print('pososal')
                         pass
 
                     return redirect('vote_candidates', vote=vote.id_Vote)
 
         return render(request, "cik/candidate.html", context=context)
+    else:
+        return render(request, "cik/denied.html")
+
+
+def candidateChangeView(request, vote, id):
+    if request.user.groups.filter(name='CIK').exists():
+        candidate = candidateModel.objects.get(pk=id)
+        data = {
+            'FIO': candidate.fio,
+            'Description': candidate.description,
+            'Image': candidate.image
+        }
+        form = CandidateForm(initial=data)
+
+        context = {
+            'form': form,
+            'vote': vote,
+            'candidate': candidate
+        }
+
+        if request.method == "POST":
+            if "change" in request.POST:
+                candidate.fio = request.POST.get('FIO')
+                candidate.description = request.POST.get('Description')
+                try:
+                    file = request.FILES['Image']
+                    fs = FileSystemStorage()
+                    filename = fs.save(file.name, file)
+                    candidate.image = file
+
+                except Exception as e:
+                    pass
+
+                candidate.save()
+                return redirect('vote_candidates', vote=vote)
+
+        else:
+            return render(request, 'cik/candidateChange.html', context=context)
+
     else:
         return render(request, "cik/denied.html")
 
