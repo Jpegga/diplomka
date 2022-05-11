@@ -70,14 +70,9 @@ def candidateView(request, vote):
 
                 if change_id != -1:
                     try:
-                        con = {
-                            id: change_id,
-                            vote: vote.id_Vote
-                        }
                         return redirect('candidate_change', vote.id_Vote, change_id)
 
                     except Exception as e:
-                        print('pososal')
                         pass
 
                     return redirect('vote_candidates', vote=vote.id_Vote)
@@ -128,58 +123,192 @@ def candidateChangeView(request, vote, id):
 
 def voteView(request):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnform" in request.POST:
+        form = VoteForm()
+        votes = voteModel.objects.all()
+        context = {
+            "form": form,
+            "votes": votes
+        }
+
+        if request.method == "POST":
             vote = voteModel()
             grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("VoteGrade")))
             territory = territoryModel.objects.get(id_Terr=int(request.POST.get("Territory")))
             vote.id_Grade = grade
             vote.id_Terr = territory
             vote.save()
-            return redirect("addcandidate")
-        elif request.method == "POST" and "btnreturn" in request.POST:
-            return HttpResponseRedirect('/cikhome/')
-        votefor = VoteForm()
-        votes = voteModel.objects.all()
-        voteCandidate = voteCandidateModel()
-        context = {"form": votefor,
-                   "votes": votes,
-                   "voteCandidate": voteCandidate}
+            return redirect("vote_candidates", vote.id_Vote)
+
+        elif len(request.GET) > 0:
+                del_id = int(request.GET.get("delete", -1))
+                change_id = int(request.GET.get("change", -1))
+
+                if del_id != -1:
+                    try:
+                        voteModel.objects.get(id_Vote=del_id).delete()
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addvote')
+
+                if change_id != -1:
+                    try:
+                        return redirect('vote_change', change_id)
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addvote')
+
         return render(request, "cik/vote.html", context=context)
+    else:
+        return render(request, "cik/denied.html")
+
+
+def voteChangeView(request, id):
+    if request.user.groups.filter(name='CIK').exists():
+        vote = voteModel.objects.get(pk=id)
+        data = {
+            'VoteGrade': vote.id_Grade,
+            'Territory': vote.id_Terr,
+        }
+        form = VoteForm(initial=data)
+
+        if request.method == "POST":
+            if "change" in request.POST:
+                vote.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("VoteGrade")))
+                vote.id_Terr = territoryModel.objects.get(id_Terr=int(request.POST.get("Territory")))
+                vote.save()
+                return redirect('addvote')
+
+        return render(request, 'cik/voteChange.html', {'form': form})
+
     else:
         return render(request, "cik/denied.html")
 
 
 def voteGradeView(request):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnform" in request.POST:
+        model = voteGradeModel.objects.all()
+        context = {"form": VoteGradeForm,
+                   "model": model}
+
+        if request.method == "POST":
             voteGrade = voteGradeModel()
             voteGrade.grade = request.POST.get("grade")
             voteGrade.name = request.POST.get("name")
             voteGrade.save()
-            return HttpResponseRedirect('/addvotegrade/')
-        model = voteGradeModel.objects.all()
-        context = {"form": VoteGradeForm,
-                    "model": model }
+            return redirect('addvotegrade')
+
+        elif len(request.GET) > 0:
+                del_id = int(request.GET.get("delete", -1))
+                change_id = int(request.GET.get("change", -1))
+
+                if del_id != -1:
+                    try:
+                        voteGradeModel.objects.get(id_Grade=del_id).delete()
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addvotegrade')
+
+                if change_id != -1:
+                    try:
+                        return redirect('votegrade_change', change_id)
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addvotegrade')
+
         return render(request, "cik/votegrade.html", context=context)
     else:
         return render(request, "cik/denied.html")
 
 
+def voteGradeChange(request, id):
+    if request.user.groups.filter(name='CIK').exists():
+        votegrade = voteGradeModel.objects.get(pk=id)
+        data = {
+            'grade': votegrade.grade,
+            'name': votegrade.name,
+        }
+        form = VoteGradeForm(initial=data)
+
+        if request.method == "POST":
+            if "change" in request.POST:
+                votegrade.grade = request.POST.get('grade')
+                votegrade.name = request.POST.get('name')
+                votegrade.save()
+                return redirect('addvotegrade')
+
+        return render(request, 'cik/voteGradeChange.html', {'form': form})
+
+    else:
+        return render(request, "cik/denied.html")
+
 
 def territoryView(request):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnform" in request.POST:
+        model = territoryModel.objects.all()
+        context = {"form": TerritoryForm,
+                   "model": model}
+
+        if request.method == "POST":
             territory = territoryModel()
             territory.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("voteGrade")))
             territory.territory_Name = request.POST.get("name")
             territory.save()
-            return HttpResponseRedirect('/addterritory/')
-        elif request.method == "POST" and "btnreturn" in request.POST:
-            return HttpResponseRedirect('/cikhome/')
-        model = territoryModel.objects.all()
-        context = {"form": TerritoryForm,
-                    "model": model }
+            return redirect('addterritory')
+
+        elif len(request.GET) > 0:
+                del_id = int(request.GET.get("delete", -1))
+                change_id = int(request.GET.get("change", -1))
+
+                if del_id != -1:
+                    try:
+                        territoryModel.objects.get(id_Terr=del_id).delete()
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addterritory')
+
+                if change_id != -1:
+                    try:
+                        return redirect('territory_change', change_id)
+
+                    except Exception as e:
+                        pass
+
+                    return redirect('addterritory')
+
         return render(request, "cik/territory.html", context=context)
+    else:
+        return render(request, "cik/denied.html")
+
+
+def territoryChangeView(request, id):
+    if request.user.groups.filter(name='CIK').exists():
+        territory = territoryModel.objects.get(pk=id)
+        data = {
+            'voteGrade': territory.id_Grade,
+            'name': territory.territory_Name,
+        }
+        form = TerritoryForm(initial=data)
+
+        if request.method == "POST":
+            if "change" in request.POST:
+                print('posos')
+                territory.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("voteGrade")))
+                territory.territory_Name = request.POST.get('name')
+                territory.save()
+                return redirect('addterritory')
+
+        return render(request, 'cik/territoryChange.html', {'form': form})
+
     else:
         return render(request, "cik/denied.html")
 
@@ -193,26 +322,27 @@ def reportsView(request):
 
 def reportCandidateVoteView(request):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnvote" in request.POST:
+        if request.method == "POST":
             vote = voteModel.objects.get(id_Vote=int(request.POST.get("Vote")))
-            return HttpResponse(reportCandidateView(request, vote))
+            return redirect('candidates_report', vote.id_Vote)
+
         else:
             return render(request, "cik/candidateVote.html", {"form": CandidateVoteForm})
+
     else:
         return render(request, "cik/denied.html")
 
 
-def reportCandidateView(request, vote):
+def reportCandidateView(request, id):
     if request.user.groups.filter(name='CIK').exists():
-        if request.method == "POST" and "btnreturn" in request.POST:
-            return HttpResponse(reportCandidateVoteView(request))
-        else:
-            candidate = candidateModel.objects.filter(votecandidatemodel__id_Vote=vote)
-            context = {
-                "vote": vote,
-                "candidates": candidate
-            }
-            return render(request, "cik/candidatesreport.html", context=context)
+        candidate = candidateModel.objects.filter(votecandidatemodel__id_Vote=id)
+        vote = voteModel.objects.get(pk=id)
+        context = {
+            "vote": vote,
+            "candidates": candidate
+        }
+        return render(request, "cik/candidatesreport.html", context=context)
+
     else:
         return render(request, "cik/denied.html")
 
@@ -221,6 +351,7 @@ def reportVotes(request):
     if request.user.groups.filter(name='CIK').exists():
         votes = voteModel.objects.all()
         return render(request, 'cik/votesreport.html', {'votes': votes})
+
     else:
         return render(request, 'cik/denied.hmtl')
 

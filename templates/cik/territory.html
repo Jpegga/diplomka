@@ -6,33 +6,33 @@
 </head>
 <body>
 <div>
-    <a href="/">Главная</a>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" value="Назад" name="btnreturn">
-    </form>
+    <a href="{% url 'main'%}"><button>Главная</button></a>
+    <a href="{% url 'cikhome'%}"><button>Назад</button></a>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table>
             {{ form }}
         </table>
-        <input type="submit" value="Сохранить" name="btnform">
-        {% if model.count > 0 %}
-        <h2>Список территорий:</h2>
-            <table>
-                <tr>
-                    <th>Уровень</th>
-                    <th>Территория</th>
-                </tr>
-                {% for territory in model %}
-                <tr>
-                    <td>{{ territory.id_Grade }}</td>
-                    <td>{{ territory.territory_Name }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
+        <input type="submit" value="Сохранить">
     </form>
+    {% if model.count > 0 %}
+    <h2>Список территорий:</h2>
+    <table>
+        <tr>
+            <th>Уровень</th>
+            <th>Территория</th>
+        </tr>
+        {% for territory in model %}
+        <tr>
+            <td>{{ territory.id_Grade }}</td>
+            <td>{{ territory.territory_Name }}</td>
+            <td><a href="?change={{ territory.id_Terr }}"><button>Изменить</button></a></td>
+            <td><a href="?delete={{ territory.id_Terr }}"><button>Удалить</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
 </div>
 </body>
 </html>

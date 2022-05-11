@@ -6,14 +6,10 @@
 </head>
 <body>
 <div>
-    <a href="/">Главная</a>
-    <form action="reports.html" target="_blank">
-        <button><a href="/voteslist/">Список выборов</a></button>
-    </form>
-    <form action="reports.html" target="_blank">
-        <button><a href="/candidateslist/">Список кандидатов</a></button>
-    </form>
-    <button><a href="/cikhome">Назад</a></button>
+    <a href="{% url 'main'%}"><button>Главная</button></a><br>
+    <a href="{% url 'votes_report'%}"><button>Список выборов</button></a><br>
+    <a href="{% url 'candidatesvotes_report'%}"><button>Список кандидатов</button></a><br>
+    <a href="{% url 'cikhome'%}"><button>Назад</button></a><br>
 </div>
 </body>
 </html>

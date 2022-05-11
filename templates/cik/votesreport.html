@@ -5,8 +5,8 @@
     <title>Список выборов</title>
 </head>
 <body>
-<a href="/">Главная</a>
-<button><a href="/reports">Назад</a></button>
+<a href="{% url 'main'%}"><button>Главная</button></a>
+<a href="{% url 'reports'%}"><button>Назад</button></a>
 {% if votes.count > 0 %}
 <h2>Список выборов</h2>
 <table>

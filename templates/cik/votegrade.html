@@ -3,7 +3,17 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Уровень выборов</title>
+    <style>
+        input[type='number'] {
+            -moz-appearance:textfield;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+    </style>
 </head>
 <body>
 <div>
@@ -13,24 +23,27 @@
         <table>
             {{ form }}
         </table>
-        <input type="submit" value="Сохранить" name="btnform">
-        <button><a href="/cikhome">Назад</a></button>
-        {% if model.count > 0 %}
-        <h2>Список уровней выборов:</h2>
-            <table>
-                <tr>
-                    <th>Уровень</th>
-                    <th>Название</th>
-                </tr>
-                {% for votegrade in model %}
-                <tr>
-                    <td>{{ votegrade.grade }}</td>
-                    <td>{{ votegrade.name }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        {% endif %}
+        <input type="submit" value="Сохранить">
     </form>
+    <a href="{% url 'cikhome' %}"><button>Назад</button></a>
+    {% if model.count > 0 %}
+    <h2>Список уровней выборов:</h2>
+    <table>
+        <tr>
+            <th>Уровень</th>
+            <th>Название</th>
+        </tr>
+        {% for votegrade in model %}
+        <tr>
+            <td>{{ votegrade.grade }}</td>
+            <td>{{ votegrade.name }}</td>
+            <td><a href="?change={{ votegrade.id_Grade }}"><button>Изменить</button></a></td>
+            <td><a href="?delete={{ votegrade.id_Grade }}"><button>Удалить</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
 </div>
 </body>
 </html>

@@ -13,29 +13,29 @@
     <title>Добавление выборов</title>
 </head>
 <body>
-    <body>
-        <div>
-            <a href="/">Главная</a>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.media.js }}
-                {{ form.as_p }}
-                <input type="submit" value="Сохранить" name="btnform">
-            </form>
-            <form method="post">
-                {% csrf_token %}
-                <input type="submit" value="Назад" name="btnreturn">
-            </form>
-            {% if votes.count > 0 %}
-                <h2>Список выборов</h2>
-                <table>
-                    <tr><th>Уровень выборов</th><th>Территория</th></tr>
-                    {% for vote in votes %}
-                    <tr><td>{{ vote.id_Grade }}</td><td>{{ vote.id_Terr }}</td></tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
-        </div>
-    </body>
+<div>
+    <a href="{% url 'main'%}">Главная</a>
+    <a href="{% url 'cikhome'%}"><button>Назад</button></a>
+    <form method="post">
+        {% csrf_token %}
+<!--        {{ form.media.js }}-->
+        {{ form.as_p }}
+        <input type="submit" value="Сохранить">
+    </form>
+    {% if votes.count > 0 %}
+    <h2>Список выборов</h2>
+    <table>
+        <tr><th>Уровень выборов</th><th>Территория</th></tr>
+        {% for vote in votes %}
+        <tr>
+            <td>{{ vote.id_Grade }}</td>
+            <td>{{ vote.id_Terr }}</td>
+            <td><a href="?change={{ vote.id_Vote }}"><button>Изменить</button></a></td>
+            <td><a href="?delete={{ vote.id_Vote }}"><button>Удалить</button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
 </body>
 </html>

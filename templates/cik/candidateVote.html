@@ -7,13 +7,13 @@
 </head>
 <body>
     <div>
-        <a href="/">Главная</a>
+        <a href="{% url 'main'%}"><button>Главная</button></a>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <table>
                 {{ form }}
             </table>
-            <input type="submit" value="Поиск" name="btnvote">
+            <input type="submit" value="Поиск">
         </form>
         <a href="{% url 'cikhome'%}"><button>Назад</button></a>
     </div>

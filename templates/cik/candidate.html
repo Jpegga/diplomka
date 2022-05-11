@@ -35,7 +35,6 @@
                     <td><img src="{{ candidate.image.url }}" alt="Фото кандидата {{ candidate.fio }}" width="100" height="100" border="0"></td>
                     <td><a href="?change={{ candidate.id_Candidate }}"><button>Изменить</button></a></td>
                     <td><a href="?delete={{ candidate.id_Candidate }}"><button>Удалить</button></a></td>
-                    <td hidden>{{ id }}{{ candidate.id_Candidate }}</td>
                 </tr>
                 {% endfor %}
             </table>

@@ -26,7 +26,7 @@ class VoteForm(forms.Form):
 
 
 class VoteGradeForm(forms.Form):
-    grade = forms.CharField(label="Уровень", widget=forms.NumberInput(attrs={'placeholder': 'Число'}))
+    grade = forms.FloatField(label="Уровень", min_value=1, max_value=3, widget=forms.NumberInput(attrs={'placeholder': 'Число'}))
     name = forms.CharField(label="Название")
 
 
