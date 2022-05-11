@@ -11,8 +11,8 @@
 </head>
 <body>
     <div>
-        <a href="{% url 'main'%}">Главная</a>
-        <a href="{% url 'addcandidate'%}"><button>Назад</button></a>
+        <a href="{% url 'main' %}"><button>Главная</button></a>
+        <a href="{% url 'addcandidate' %}"><button>Назад</button></a>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <table>
