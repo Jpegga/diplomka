@@ -40,7 +40,7 @@ urlpatterns = [
     path('reports/', cik.reportsView, name='reports'),
     path('candidatesvoteslist/', cik.reportCandidateVoteView, name='candidatesvotes_report'),
     path('candidateslist/<int:id>', cik.reportCandidateView, name='candidates_report'),
-    path('voteslist/', cik.reportVotes, name='votes_report'),
+    path('voteslist/', cik.reportVotes, name='votes_report')
 
 
     # path('vote/', cik.VoteCreateView.as_view(), name="vote_create"),
