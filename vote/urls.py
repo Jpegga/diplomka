@@ -41,8 +41,4 @@ urlpatterns = [
     path('candidatesvoteslist/', cik.reportCandidateVoteView, name='candidatesvotes_report'),
     path('candidateslist/<int:id>', cik.reportCandidateView, name='candidates_report'),
     path('voteslist/', cik.reportVotes, name='votes_report')
-
-
-    # path('vote/', cik.VoteCreateView.as_view(), name="vote_create"),
-    # path('select2/', include('django_select2.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -301,7 +301,6 @@ def territoryChangeView(request, id):
 
         if request.method == "POST":
             if "change" in request.POST:
-                print('posos')
                 territory.id_Grade = voteGradeModel.objects.get(id_Grade=int(request.POST.get("voteGrade")))
                 territory.territory_Name = request.POST.get('name')
                 territory.save()
@@ -354,11 +353,3 @@ def reportVotes(request):
 
     else:
         return render(request, 'cik/denied.hmtl')
-
-
-# class VoteCreateView(generic.CreateView):
-#     model = vote_Grade
-#     form_class = VoteWidget()
-#     success_url = "vote/"
-#     def get(self, request):
-#         return render(request, 'cik/vote.html', {"form": VoteWidget()})

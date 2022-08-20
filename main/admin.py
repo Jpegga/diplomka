@@ -1,6 +1,5 @@
 from django.contrib import admin
 from cik.models import *
-# from easy_select2 import select2_modelform
 
 
 admin.site.register(voteModel)

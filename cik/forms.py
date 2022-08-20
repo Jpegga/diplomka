@@ -1,9 +1,6 @@
-# import django_select2.forms
 from django import forms
 import cik.models
 from cik.models import *
-# import easy_select2
-# from django_select2 import forms as s2forms
 
 
 class CandidateVoteForm(forms.Form):
@@ -33,51 +30,3 @@ class VoteGradeForm(forms.Form):
 class TerritoryForm(forms.Form):
     voteGrade = forms.ModelChoiceField(label="Уровень выборов", queryset=voteGradeModel.objects.all())
     name = forms.CharField(label="Название территории")
-
-
-# class VoteWidget(easy_select2.Select2Mixin):
-#     search_fields = [
-#         "username__icontains",
-#         "email__icontains",
-#     ]
-#
-#
-# class VoteForm(forms.ModelForm):
-#     class Meta:
-#         model = vote
-#         fields = "__all__"
-#         widgets = {
-#             "vote": VoteWidget,
-#         }
-
-
-# class VoteWidget(forms.Form):
-#     voteGrade = forms.ModelChoiceField(
-#         queryset=vote_Grade.objects.all(),
-#         label=u"Уровень выборов",
-#         widget=s2forms.ModelSelect2Widget(
-#             model=vote_Grade,
-#             search_fields=['name__icontains'],
-#         )
-#     )
-#
-#     terr = forms.ModelChoiceField(
-#         queryset=territory.objects.all(),
-#         label=u"Территория проведения выборов",
-#         widget=s2forms.ModelSelect2Widget(
-#             model=territory,
-#             fields=("territory_Name", ),
-#             search_fields=['name__icontains'],
-#             dependent_fields={'vote_Grade': 'id_Grade'},
-#             max_results=100,
-#         )
-#     )
-#
-#
-# class VoteForm(forms.ModelForm):
-#     class Meta:
-#         model = vote_Grade
-#         fields = ("grade", )
-#         widgets = {
-#             "grade": s2forms.Select2Widget,
-#         }
